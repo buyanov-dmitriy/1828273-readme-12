@@ -42,7 +42,28 @@ $cards = [
     ],
 ];
 ?>
+<?php
+    function cut_text (string $str, $length = 300) {
+        $text_massive = explode(' ', $str); //массив отдельных слов
+        $new_str = [];
+        $count = 0; //количество символов в обрезанной строке
+        $index = 0; //индекс массива
 
+        if (iconv_strlen($str) <= $length) {
+            return $str;
+        }
+        else {
+            while ($count <= $length) {
+                $count = $count + iconv_strlen($text_massive[$index]);
+                if ($count <= $length) {
+                    $new_str[$index] = $text_massive[$index];
+                    $index++;
+                }
+            }
+            return implode(' ', $new_str) . '...';
+        }
+    };
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -275,7 +296,10 @@ $cards = [
                             <img src="img/<?=$card['content'];?>" alt="Фото от пользователя" width="360" height="240">
                         </div>
                     <?php elseif ($card['type'] === 'post-text'): ?>
-                        <p><?=$card['content'];?></p>
+                        <p><?=cut_text($card['content']);?></p>
+                        <?php if(cut_text($card['content']) != $card['content']): ?>
+                            <a class="post-text__more-link" href="#">Читать далее</a>
+                        <?php endif ?>
                     <?php endif ?>
                 </div>
                 <footer class="post__footer">
