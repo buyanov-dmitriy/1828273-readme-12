@@ -46,15 +46,6 @@ foreach ($cards as &$card) {
     $card['content'] = htmlspecialchars($card['content']);
 };
 
-/*function cut_text (string $str, $length = 300) {
-    if (iconv_strlen($str) <= $length) {
-        return $str;
-    }
-    $str_new = mb_substr($str, 0, $length);
-    $last_whitespace = mb_strripos($str_new, ' ', 0);
-    return mb_substr($str_new, 0, $last_whitespace) . '...';
-};*/
-
 $page_content = include_template('main.php', ['cards' => $cards]);
 $layout_content = include_template('layout.php', ['title' => 'readme: популярное', 'content' => $page_content, 'is_auth' => $is_auth]);
 print($layout_content);
