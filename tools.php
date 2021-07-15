@@ -1,5 +1,9 @@
 <?php
-//функция обрезания строки, если ее длина больше 300 символов
+/**
+ * @param string $str string to output
+ * @param $length max length of output string
+ * @return string cut if necessary
+ */
 function cut_text (string $str, $length = 300) {
     if (iconv_strlen($str) <= $length) {
         return $str;

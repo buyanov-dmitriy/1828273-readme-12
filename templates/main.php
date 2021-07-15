@@ -1,6 +1,10 @@
 <?php
-require_once('tools.php');
+foreach ($cards as &$card) {
+    $card['content'] = htmlspecialchars($card['content']);
+};
+unset($card);
 ?>
+
 <div class="container">
         <h1 class="page__title page__title--popular">Популярное</h1>
     </div>
@@ -93,37 +97,10 @@ require_once('tools.php');
                     <h2><?=$card['title'];?></h2>
                 </header>
                 <div class="post__main">
-                    <?php if ($card['type'] === 'post-quote'): ?>
-                        <blockquote>
-                            <p>
-                                <?=$card['content'];?>
-                            </p>
-                            <cite>Неизвестный Автор</cite>
-                        </blockquote>
-                    <?php elseif ($card['type'] === 'post-link'): ?>
-                        <div class="post-link__wrapper">
-                            <a class="post-link__external" href="http://<?=$card['content'];?>" title="Перейти по ссылке">
-                                <div class="post-link__info-wrapper">
-                                    <div class="post-link__icon-wrapper">
-                                        <img src="https://www.google.com/s2/favicons?domain=vitadental.ru" alt="Иконка">
-                                    </div>
-                                    <div class="post-link__info">
-                                        <h3><?=$card['title'];?></h3>
-                                    </div>
-                                </div>
-                                <span><?=$card['content'];?></span>
-                            </a>
-                        </div>
-                    <?php elseif ($card['type'] === 'post-photo'): ?>
-                        <div class="post-photo__image-wrapper">
-                            <img src="img/<?=$card['content'];?>" alt="Фото от пользователя" width="360" height="240">
-                        </div>
-                    <?php elseif ($card['type'] === 'post-text'): ?>
-                        <p><?=cut_text($card['content']);?></p>
-                        <?php if(cut_text($card['content']) != $card['content']): ?>
-                            <a class="post-text__more-link" href="#">Читать далее</a>
-                        <?php endif ?>
-                    <?php endif ?>
+                    <?php
+                        $content = include_template($card['type'] . '.php', ['content' => $card['content'], 'title' => $card['title']]);
+                        print($content);
+                    ?>
                 </div>
                 <footer class="post__footer">
                     <div class="post__author">

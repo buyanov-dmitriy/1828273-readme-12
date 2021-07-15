@@ -1,5 +1,7 @@
 <?php
 require_once('helpers.php');
+require_once('tools.php');
+
 $is_auth = rand(0, 1);
 $user_name = 'Буянов Дмитрий'; // укажите здесь ваше имя
 $title = 'readme: популярное';
@@ -41,10 +43,6 @@ $cards = [
         'avatar' => 'userpic.jpg',
     ],
 ];
-
-foreach ($cards as &$card) {
-    $card['content'] = htmlspecialchars($card['content']);
-};
 
 $page_content = include_template('main.php', ['cards' => $cards]);
 $layout_content = include_template('layout.php', ['title' => 'readme: популярное', 'content' => $page_content, 'is_auth' => $is_auth]);
