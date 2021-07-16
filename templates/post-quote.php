@@ -1,6 +1,6 @@
 <blockquote>
     <p>
-        <?= $content; ?>
+        <?= htmlspecialchars($content); ?>
     </p>
     <cite>Неизвестный Автор</cite>
 </blockquote>

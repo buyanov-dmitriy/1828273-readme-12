@@ -1,6 +1,7 @@
 <?php
 require_once('helpers.php');
 require_once('tools.php');
+date_default_timezone_set('Europe/Moscow');
 
 $is_auth = rand(0, 1);
 $user_name = 'Буянов Дмитрий'; // укажите здесь ваше имя

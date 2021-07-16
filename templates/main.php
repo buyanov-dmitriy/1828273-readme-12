@@ -1,10 +1,3 @@
-<?php
-foreach ($cards as &$card) {
-    $card['content'] = htmlspecialchars($card['content']);
-};
-unset($card);
-?>
-
 <div class="container">
         <h1 class="page__title page__title--popular">Популярное</h1>
     </div>
@@ -91,7 +84,7 @@ unset($card);
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($cards as $card): ?>
+            <?php foreach ($cards as $key => $card): ?>
             <article class="popular__post post <?=$card['type'];?>">
                 <header class="post__header">
                     <h2><?=$card['title'];?></h2>
@@ -110,7 +103,8 @@ unset($card);
                             </div>
                             <div class="post__info">
                                 <b class="post__author-name"><?=$card['user'];?></b>
-                                <time class="post__time" datetime="">дата</time>
+                                <?php $post_date = generate_random_date((int) ($key));?>
+                                <time title="<?php print(date('d.m.Y H:i', strtotime($post_date))) ?>" class="post__time" datetime="<?= $post_date; ?>"><?php print(show_relative_format($post_date)); ?></time>
                             </div>
                         </a>
                     </div>
