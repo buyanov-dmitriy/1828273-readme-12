@@ -1,0 +1,74 @@
+CREATE DATABASE readme
+  DEFAULT CHARACTER SET utf8
+  DEFAULT COLLATE utf8_general_ci;
+
+USE readme;
+
+CREATE TABLE users (
+  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  registration TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  email VARCHAR(128) NOT NULL UNIQUE,
+  login VARCHAR(50) NOT NULL UNIQUE,
+  password CHAR(64) NOT NULL,
+  avatar VARCHAR(200)
+);
+
+CREATE TABLE post (
+  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  user_id INT(11) NOT NULL,
+  content_id INT(11) NOT NULL,
+  creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  title VARCHAR(1024),
+  content TINYTEXT NOT NULL,
+  author VARCHAR(100),
+  picture VARCHAR(2048),
+  video VARCHAR(200),
+  web VARCHAR(2048),
+  views INT(11),
+  INDEX p_title (title),
+  INDEX p_author (author)
+);
+
+CREATE TABLE comments (
+  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  user_id INT(11) NOT NULL,
+  post_id INT(11) NOT NULL,
+  creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  content TINYTEXT NOT NULL
+);
+
+CREATE TABLE likes (
+  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  user_id INT(11) NOT NULL,
+  post_id INT(11) NOT NULL
+);
+
+CREATE TABLE subscription (
+  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  user_id INT(11) NOT NULL,
+  user_id_subscribed INT(11) NOT NULL
+);
+
+CREATE TABLE messages (
+  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  user_id_sender INT(11) NOT NULL,
+  user_id_recipient INT(11) NOT NULL,
+  creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  content TINYTEXT NOT NULL
+);
+
+CREATE TABLE hashtags (
+  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(20) NOT NULL UNIQUE
+);
+
+CREATE TABLE posts_hashtags (
+  post_id INT(11) NOT NULL,
+  hashtag_id INT(11) NOT NULL
+);
+
+CREATE TABLE contents (
+  id INT(11) AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(15) NOT NULL,
+  class VARCHAR(15) NOT NULL
+);
