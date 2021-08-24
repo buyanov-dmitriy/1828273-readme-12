@@ -19,7 +19,7 @@ CREATE TABLE post (
   content_id INT(11) NOT NULL,
   creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   title VARCHAR(1024),
-  content TINYTEXT NOT NULL,
+  content TINYTEXT,
   author VARCHAR(100),
   picture VARCHAR(2048),
   video VARCHAR(200),
