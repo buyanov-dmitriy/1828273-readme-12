@@ -40,58 +40,36 @@
                             <span>Все</span>
                         </a>
                     </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--photo button" href="#">
-                            <span class="visually-hidden">Фото</span>
-                            <svg class="filters__icon" width="22" height="18">
-                                <use xlink:href="#icon-filter-photo"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--video button" href="#">
-                            <span class="visually-hidden">Видео</span>
-                            <svg class="filters__icon" width="24" height="16">
-                                <use xlink:href="#icon-filter-video"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--text button" href="#">
-                            <span class="visually-hidden">Текст</span>
-                            <svg class="filters__icon" width="20" height="21">
-                                <use xlink:href="#icon-filter-text"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--quote button" href="#">
-                            <span class="visually-hidden">Цитата</span>
-                            <svg class="filters__icon" width="21" height="20">
-                                <use xlink:href="#icon-filter-quote"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="popular__filters-item filters__item">
-                        <a class="filters__button filters__button--link button" href="#">
-                            <span class="visually-hidden">Ссылка</span>
-                            <svg class="filters__icon" width="21" height="18">
-                                <use xlink:href="#icon-filter-link"></use>
-                            </svg>
-                        </a>
-                    </li>
+                    <?php
+                        foreach ($categories as $category) {
+                            $contentTypeIcon = include_template('content-type-icon.php', ['category' => $category['name'], 'class' => $category['class']]);
+                            print($contentTypeIcon);
+                        }
+                    ?>
                 </ul>
             </div>
         </div>
         <div class="popular__posts">
-            <?php foreach ($cards as $key => $card): ?>
-            <article class="popular__post post <?=$card['type'];?>">
+            <?php foreach ($posts as $key => $post): ?>
+            <article class="popular__post post post-<?=$post['class'];?>">
                 <header class="post__header">
-                    <h2><?=$card['title'];?></h2>
+                    <h2><?=$post['title'];?></h2>
                 </header>
                 <div class="post__main">
                     <?php
-                        $content = include_template($card['type'] . '.php', ['content' => $card['content'], 'title' => $card['title']]);
+                        if (!empty($post['picture'])) {
+                            $postContent = $post['picture'];
+                        }
+                        elseif (!empty($post['video'])) {
+                            $postContent = $post['video'];
+                        }
+                        elseif (!empty($post['web'])) {
+                            $postContent = $post['web'];
+                        }
+                        else {
+                            $postContent = $post['content'];
+                        }
+                        $content = include_template('post-' . $post['class'] . '.php', ['content' => $postContent, 'title' => $post['title'], 'quote' => $post['author']]);
                         print($content);
                     ?>
                 </div>
@@ -99,11 +77,13 @@
                     <div class="post__author">
                         <a class="post__author-link" href="#" title="Автор">
                             <div class="post__avatar-wrapper">
-                                <img class="post__author-avatar" src="img/<?=$card['avatar'];?>" alt="Аватар пользователя">
+                                <img class="post__author-avatar" src="img/<?=$post['avatar'];?>" alt="Аватар пользователя">
                             </div>
                             <div class="post__info">
-                                <b class="post__author-name"><?=$card['user'];?></b>
-                                <?php $post_date = generate_random_date((int) ($key));?>
+                                <b class="post__author-name"><?=$post['login'];?></b>
+                                <?php $post_date = generate_random_date((int) ($key));
+                                $post_date = $post['creation'];
+                                ?>
                                 <time title="<?php print(date('d.m.Y H:i', strtotime($post_date))) ?>" class="post__time" datetime="<?= $post_date; ?>"><?php print(show_relative_format($post_date)); ?></time>
                             </div>
                         </a>

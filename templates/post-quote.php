@@ -2,5 +2,5 @@
     <p>
         <?= htmlspecialchars($content); ?>
     </p>
-    <cite>Неизвестный Автор</cite>
+    <cite><?=$quote?></cite>
 </blockquote>
