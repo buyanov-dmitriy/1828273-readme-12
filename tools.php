@@ -37,15 +37,15 @@ function show_relative_format($post_date) {
     $diff = $cur_date - strtotime($post_date);
     switch(true) {
         case ($diff < 3600):
-            return(ceil($diff / 60) . ' ' . get_noun_plural_form(ceil($diff / 60), 'минута', 'минуты', 'минут') . ' назад');
+            return(ceil($diff / 60) . ' ' . get_noun_plural_form(ceil($diff / 60), 'минута', 'минуты', 'минут'));
         case ($diff < 86400):
-            return(ceil($diff / 3600) . ' ' . get_noun_plural_form(ceil($diff / 3600), 'час', 'часа', 'часов') . ' назад');
+            return(ceil($diff / 3600) . ' ' . get_noun_plural_form(ceil($diff / 3600), 'час', 'часа', 'часов'));
         case ($diff < 604800):
-            return(ceil($diff / 86400) . ' ' . get_noun_plural_form(ceil($diff / 86400), 'день', 'дня', 'дней') . ' назад');
+            return(ceil($diff / 86400) . ' ' . get_noun_plural_form(ceil($diff / 86400), 'день', 'дня', 'дней'));
         case ($diff < 3024000):
-            return(ceil($diff / 604800) . ' ' . get_noun_plural_form(ceil($diff / 604800), 'неделя', 'недели', 'недель') . ' назад');
+            return(ceil($diff / 604800) . ' ' . get_noun_plural_form(ceil($diff / 604800), 'неделя', 'недели', 'недель'));
         default:
-            return(ceil($diff / 3024000) . ' ' . get_noun_plural_form(ceil($diff / 3024000), 'месяц', 'месяца', 'месяцев') . ' назад');
+            return(ceil($diff / 3024000) . ' ' . get_noun_plural_form(ceil($diff / 3024000), 'месяц', 'месяца', 'месяцев'));
     }
 };
 ?>
