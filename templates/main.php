@@ -42,8 +42,7 @@
                         </a>
                     </li>
                     <?php
-                        foreach ($categories as $category) {
-                            $contentTypeIcon = include_template('content-type-icon.php', ['id' => $category['id'], 'category' => $category['name'], 'class' => $category['class']]);
+                        foreach ($contentTypeIcons as $contentTypeIcon) {
                             print($contentTypeIcon);
                         }
                     ?>
@@ -51,13 +50,11 @@
             </div>
         </div>
         <div class="popular__posts">
-            <?php if (isset($_GET['categoryId'])) {
-                $posts = getPostWithContentFilter($connect, $_GET['categoryId']);
-            }
+            <?php
             foreach ($posts as $key => $post): ?>
             <article class="popular__post post post-<?=$post['class'];?>">
                 <header class="post__header">
-                    <h2><a href=<?='/post.php?postId=' . $post['postID']?>><?=$post['title'];?></a></h2>
+                    <h2><a href=<?='/post.php?postId=' . $post['postId']?>><?=$post['title'];?></a></h2>
                 </header>
                 <div class="post__main">
                     <?php
@@ -88,7 +85,7 @@
                                 <?php $post_date = generate_random_date((int) ($key));
                                 $post_date = $post['creation'];
                                 ?>
-                                <time title="<?php print(date('d.m.Y H:i', strtotime($post_date))) ?>" class="post__time" datetime="<?= $post_date; ?>"><?=show_relative_format($post_date);?> назад</time>
+                                <time title="<?php print(date('d.m.Y H:i', strtotime($post_date))) ?>" class="post__time" datetime="<?= $post_date; ?>"><?=showRelativeFormat($post_date);?> назад</time>
                             </div>
                         </a>
                     </div>
@@ -101,14 +98,14 @@
                                 <svg class="post__indicator-icon post__indicator-icon--like-active" width="20" height="17">
                                     <use xlink:href="#icon-heart-active"></use>
                                 </svg>
-                                <span>0</span>
+                                <span><?=$post['likeCount']?></span>
                                 <span class="visually-hidden">количество лайков</span>
                             </a>
                             <a class="post__indicator post__indicator--comments button" href="#" title="Комментарии">
                                 <svg class="post__indicator-icon" width="19" height="17">
                                     <use xlink:href="#icon-comment"></use>
                                 </svg>
-                                <span>0</span>
+                                <span><?=$post['commentsCount']?></span>
                                 <span class="visually-hidden">количество комментариев</span>
                             </a>
                         </div>

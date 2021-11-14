@@ -1,3 +1,9 @@
+<!-- не использую пока наследование шаблона, потому что делал по заданию, цитирую:
+"Создайте новый шаблон, который будет подключаться в post.php. Вёрстку для сценария возьмите из post-details.html."
+Предлагаю оставить наследование шаблонов для консультации после следующего задания, потому что
+пока не очень разобрался с этим. Вижу, что там либо классы, либо Twig, или библиотека Template Inheritance,
+поэтому, если есть какой-то способ без сторонних библиотек, было бы прикольно.
+Но давай оставим это на консультацию, так как тут пока не требовалось в задании? -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -111,7 +117,7 @@
       <h2 class="visually-hidden">Публикация</h2>
       <div class="post-details__wrapper post-<?=$postClass?>">
         <div class="post-details__main-block post post--details">
-          <?=$post_content?>
+          <?=$postContent?>
           <div class="post__indicators">
             <div class="post__buttons">
               <a class="post__indicator post__indicator--likes button" href="#" title="Лайк">
@@ -222,7 +228,7 @@
               <a class="post-details__name user__name" href="#">
                 <span><?=$login?></span>
               </a>
-              <time class="post-details__time user__time" datetime="<?=$registration?>"><?=show_relative_format($registration);?> на сайте</time>
+              <time class="post-details__time user__time" datetime="<?=$registration?>"><?=showRelativeFormat($registration);?> на сайте</time>
             </div>
           </div>
           <div class="post-details__rating user__rating">

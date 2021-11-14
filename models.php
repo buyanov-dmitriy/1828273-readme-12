@@ -26,7 +26,11 @@ function connectToMySQL($host, $user, $password, $database) {
  * @return array Типы контента
  */
 function getTypesContent($connection) {
-    $categoriesResult = mysqli_query($connection, 'SELECT * FROM contents');
+    $categoriesResult = mysqli_query($connection, 'SELECT
+        id,
+        name,
+        class
+    FROM contents');
     $categoriesRows = mysqli_fetch_all($categoriesResult, MYSQLI_ASSOC);
     return $categoriesRows;
 }
@@ -39,7 +43,26 @@ function getTypesContent($connection) {
  * @return array Посты с авторами
  */
 function getPostWithAuthor($connection) {
-    $postsResult = mysqli_query($connection, 'SELECT *, p.id AS postID FROM post p JOIN users u ON p.user_id = u.id JOIN contents c ON p.content_id = c.id ORDER BY views DESC');
+    $postsResult = mysqli_query($connection, 'SELECT
+        p.id AS postId,
+        user_id,
+        content_id,
+        creation,
+        title,
+        content,
+        author,
+        picture,
+        video,
+        web,
+        views,
+        login,
+        avatar,
+        name,
+        class
+    FROM post p
+    JOIN users u ON p.user_id = u.id
+    JOIN contents c ON p.content_id = c.id
+    ORDER BY views DESC');
     $postsRows = mysqli_fetch_all($postsResult, MYSQLI_ASSOC);
     return $postsRows;
 }
@@ -49,11 +72,32 @@ function getPostWithAuthor($connection) {
  *
  * @param $connection Объект, который представляет соединение
  * с сервером MySQL
- * $contentFIlterID Целое число - id типа контента, по которому происходит фильтрация
+ * $contentFilterId Целое число - id типа контента, по которому происходит фильтрация
  * @return array Отфильтрованные посты
  */
-function getPostWithContentFilter($connection, $contentFIlterID) {
-    $query = "SELECT *, p.id AS postID FROM post p JOIN users u ON p.user_id = u.id JOIN contents c ON p.content_id = c.id WHERE p.content_id = $contentFIlterID ORDER BY views DESC";
+function getPostWithContentFilter($connection, $contentFilterId) {
+    $safeContentFilterId = mysqli_real_escape_string($connection, $contentFilterId);
+    $query = "SELECT
+        p.id AS postId,
+        user_id,
+        content_id,
+        creation,
+        title,
+        content,
+        author,
+        picture,
+        video,
+        web,
+        views,
+        login,
+        avatar,
+        name,
+        class
+    FROM post p
+    JOIN users u ON p.user_id = u.id
+    JOIN contents c ON p.content_id = c.id
+    WHERE p.content_id = $safeContentFilterId
+    ORDER BY views DESC";
     $postsResult = mysqli_query($connection, $query);
     $postsRows = mysqli_fetch_all($postsResult, MYSQLI_ASSOC);
     return $postsRows;
@@ -64,14 +108,35 @@ function getPostWithContentFilter($connection, $contentFIlterID) {
  *
  * @param $connection Объект, который представляет соединение
  * с сервером MySQL
- * $postID Целое число - id искомого поста
- * @return array Пост
+ * $postId Целое число - id искомого поста
+ * @return запись из БД - пост
  */
-function getPostById($connection, $postID) {
-    $query = "SELECT * FROM post p JOIN contents c ON p.content_id = c.id JOIN users u ON p.user_id = u.id WHERE p.id = $postID";
-    $postsResult = mysqli_query($connection, $query);
-    $postsRows = mysqli_fetch_all($postsResult, MYSQLI_ASSOC);
-    return $postsRows;
+function getPostById($connection, $postId) {
+    $safePostId = mysqli_real_escape_string($connection, $postId);
+    $query = "SELECT
+        p.id AS postID,
+        user_id,
+        content_id,
+        creation,
+        title,
+        content,
+        author,
+        picture,
+        video,
+        web,
+        views,
+        registration,
+        login,
+        avatar,
+        name,
+        class
+    FROM post p
+    JOIN contents c ON p.content_id = c.id
+    JOIN users u ON p.user_id = u.id
+    WHERE p.id = $safePostId";
+    $postResult = mysqli_query($connection, $query);
+    $post = mysqli_fetch_assoc($postResult);
+    return $post;
 }
 
 /**
@@ -79,14 +144,15 @@ function getPostById($connection, $postID) {
  *
  * @param $connection Объект, который представляет соединение
  * с сервером MySQL
- * $postID Целое число - id искомого поста
- * @return array Пост
+ * $postId Целое число - id искомого поста
+ * @return целое число - количество лайков
  */
-function getLikeCount($connection, $postID) {
-    $query = "SELECT COUNT(*) FROM likes WHERE post_id = $postID";
-    $postsResult = mysqli_query($connection, $query);
-    $postsRows = mysqli_fetch_all($postsResult, MYSQLI_ASSOC);
-    return $postsRows;
+function getLikeCount($connection, $postId) {
+    $safePostId = mysqli_real_escape_string($connection, $postId);
+    $query = "SELECT * FROM likes WHERE post_id = $safePostId";
+    $result = mysqli_query($connection, $query);
+    $likeCount = mysqli_num_rows($result);
+    return $likeCount;
 }
 
 /**
@@ -94,14 +160,15 @@ function getLikeCount($connection, $postID) {
  *
  * @param $connection Объект, который представляет соединение
  * с сервером MySQL
- * $postID Целое число - id искомого поста
- * @return array Пост
+ * $postId Целое число - id искомого поста
+ * @return целое число - количество комментариев
  */
-function getCommentsCount($connection, $postID) {
-    $query = "SELECT COUNT(*) FROM comments WHERE post_id = $postID";
-    $postsResult = mysqli_query($connection, $query);
-    $postsRows = mysqli_fetch_all($postsResult, MYSQLI_ASSOC);
-    return $postsRows;
+function getCommentsCount($connection, $postId) {
+    $safePostId = mysqli_real_escape_string($connection, $postId);
+    $query = "SELECT * FROM comments WHERE post_id = $safePostId";
+    $result = mysqli_query($connection, $query);
+    $commentsCount = mysqli_num_rows($result);
+    return $commentsCount;
 }
 
 /**
@@ -109,14 +176,15 @@ function getCommentsCount($connection, $postID) {
  *
  * @param $connection Объект, который представляет соединение
  * с сервером MySQL
- * $userID Целое число - id пользователя
- * @return array Пост
+ * $userId Целое число - id пользователя
+ * @return целое число - количество подписчиков
  */
-function getSubsCount($connection, $userID) {
-    $query = "SELECT COUNT(*) FROM subscription WHERE user_id = $userID";
-    $postsResult = mysqli_query($connection, $query);
-    $postsRows = mysqli_fetch_all($postsResult, MYSQLI_ASSOC);
-    return $postsRows;
+function getSubsCount($connection, $userId) {
+    $safeUserId = mysqli_real_escape_string($connection, $userId);
+    $query = "SELECT * FROM subscription WHERE user_id = $safeUserId";
+    $result = mysqli_query($connection, $query);
+    $subsCount = mysqli_num_rows($result);
+    return $subsCount;
 }
 
 /**
@@ -124,14 +192,43 @@ function getSubsCount($connection, $userID) {
  *
  * @param $connection Объект, который представляет соединение
  * с сервером MySQL
- * $userID Целое число - id пользователя
- * @return array Пост
+ * $userId Целое число - id пользователя
+ * @return целое число - количество постов
  */
-function getPostsCount($connection, $userID) {
-    $query = "SELECT COUNT(*) FROM post WHERE user_id = $userID";
-    $postsResult = mysqli_query($connection, $query);
-    $postsRows = mysqli_fetch_all($postsResult, MYSQLI_ASSOC);
-    return $postsRows;
+function getPostsCount($connection, $userId) {
+    $safeUserId = mysqli_real_escape_string($connection, $userId);
+    $query = "SELECT * FROM post WHERE user_id = $safeUserId";
+    $result = mysqli_query($connection, $query);
+    $postsCount = mysqli_num_rows($result);
+    return $postsCount;
+}
+
+/**
+ * В ассоциативном массиве получает:
+ * количество лайков поста;
+ * количество комментариев поста;
+ * количество подписчиков пользователя;
+ * количество публикаций пользователя
+ *
+ * @param $connection Объект, который представляет соединение
+ * с сервером MySQL
+ * $postId Целое число - id искомого поста
+ * $userId Целое число - id пользователя
+ *
+ * @return целое число - количество постов
+ */
+function getPostAndUserInformation($connection, $postId, $userId) {
+    $likeCount = getLikeCount($connection, $postId);
+    $commentsCount = getCommentsCount($connection, $postId);
+    $subsCount = getSubsCount($connection, $userId);
+    $postsCount = getPostsCount($connection, $userId);
+    $information = array(
+        'likeCount' => $likeCount,
+        'commentsCount' => $commentsCount,
+        'subsCount' => $subsCount,
+        'postsCount' => $postsCount
+    );
+    return $information;
 }
 
 ?>

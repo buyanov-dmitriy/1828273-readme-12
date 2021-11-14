@@ -9,13 +9,13 @@
  * @param $length Максимальная длина строки
  * @return string Обрезанная, при необходимости, строка
  */
-function cut_text (string $str, $length = 300) {
+function cutText (string $str, $length = 300) {
     if (iconv_strlen($str) <= $length) {
         return $str;
     }
-    $str_new = mb_substr($str, 0, $length);
-    $last_whitespace = mb_strripos($str_new, ' ', 0);
-    return mb_substr($str_new, 0, $last_whitespace) . '...';
+    $strNew = mb_substr($str, 0, $length);
+    $lastWhitespace = mb_strripos($strNew, ' ', 0);
+    return mb_substr($strNew, 0, $lastWhitespace) . '...';
 };
 
 /**
@@ -29,12 +29,12 @@ function cut_text (string $str, $length = 300) {
  * 2019-11-10 09:45 > 2 дня назад;
  * и т. д.
  *
- * @param string $post_date Строка, содержащая дату
+ * @param string $postDate Строка, содержащая дату
  * @return string Строка, содержащая дату в относительном формате
  */
-function show_relative_format($post_date) {
-    $cur_date = strtotime(date('Y-m-d H:i:s'));
-    $diff = $cur_date - strtotime($post_date);
+function showRelativeFormat($postDate) {
+    $curDate = strtotime(date('Y-m-d H:i:s'));
+    $diff = $curDate - strtotime($postDate);
     switch(true) {
         case ($diff < 3600):
             return(ceil($diff / 60) . ' ' . get_noun_plural_form(ceil($diff / 60), 'минута', 'минуты', 'минут'));

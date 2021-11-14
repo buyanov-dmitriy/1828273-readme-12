@@ -36,7 +36,7 @@
         </form>
         <div class="header__nav-wrapper">
             <!-- здесь должен быть PHP код, который показывает следующий тег по условию -->
-            <?php if ($is_auth === 1): ?>
+            <?php if ($isAuth === 1): ?>
             <nav class="header__nav">
                 <ul class="header__my-nav">
                     <li class="header__my-page header__my-page--popular">
@@ -65,6 +65,7 @@
                             <div class="header__profile-name">
                                 <span>
                                     <!--здесь должно быть имя пользователя-->
+                                    <?=$userName ?>
                                 </span>
                                 <svg class="header__link-arrow" width="10" height="6">
                                     <use xlink:href="#icon-arrow-right-ad"></use>
